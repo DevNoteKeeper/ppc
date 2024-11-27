@@ -1,0 +1,11 @@
+Happy
+Birth
+
+
+/*
+1. background(machine, cup)
+2. create text file, import, split
+3. button > using sentence
+4. word expression 
+5. letter expression
+*/

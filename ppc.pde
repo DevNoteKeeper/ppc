@@ -7,12 +7,15 @@
 // angelika mader november 2021
 
 Word word;
-
+// PFont font;
 int state;  // this program has two states so far
 
 void setup() {
   size(400, 400);
   word = new Word("Hello world!", width/2, height/2);
+
+  String[] lines = loadStrings("file.txt");
+//   font = createFont("banana-days-font/BananaDays-nRMLV.ttf", 60);
 
   state = 0;  // the initial stat is 0
 }

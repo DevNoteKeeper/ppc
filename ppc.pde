@@ -12,9 +12,10 @@ int state;  // this program has two states so far
 
 void setup() {
   size(400, 400);
-  word = new Word("Hello world!", width/2, height/2);
+
 
   String[] lines = loadStrings("file.txt");
+  word = new Word(lines[0], width/2, height/2);
 //   font = createFont("banana-days-font/BananaDays-nRMLV.ttf", 60);
 
   state = 0;  // the initial stat is 0

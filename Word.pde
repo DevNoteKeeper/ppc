@@ -1,15 +1,15 @@
 class Word {
   
  String myWord;
- float xPosition, yPosition;
+ float x = width/2;
+ float y = 0;
  float angle;
  Letter [] letters;
- 
- Word (String word, float xPosition, float yPosition) {
+
+ Word (String word, float x, float y) {
     myWord = word;
-    this.xPosition = xPosition;
-    this.yPosition = yPosition;
-    angle = random (2 * PI);
+    this.x = x;
+    this.y = y;
     letters = new Letter [myWord.length()];
     
     // split te word in an array of the individual letters
@@ -20,12 +20,14 @@ class Word {
  
  void drawWord(){
    pushMatrix();
-   translate(xPosition, yPosition);
+   updateWord();
    rotate(angle); 
    fill(200,10,200);
    textSize(35);
-   text(myWord, 0,0);
+   text(myWord, x,y);
    popMatrix();
+   println(x, y);
+  
  }
  
  void drawLetters(){
@@ -37,7 +39,13 @@ class Word {
  
  void updateWord(){
    // anything changing position and rotation
+   if(x >= width/2 - 100 & y >= height/3){
+   x -= 2;
+   y += 2;
+   }
+   else if(y >= height/3){
+    x += 2;
+   }
  }
- 
  
 }

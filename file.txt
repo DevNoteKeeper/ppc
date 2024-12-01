@@ -1,12 +1,9 @@
-Chocolate
-Strawbarry
-Banana
+Wishing you a joyful Christmas
 
 
 /*
-1. background(machine, cup)
-2. create text file, import, split
-3. button > using sentence
-4. word expression 
-5. letter expression
+1. chirstmas card
+2. word falling down following christmas tree line
+3. even letter change alpha
+4. 
 */

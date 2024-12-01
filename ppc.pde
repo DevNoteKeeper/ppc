@@ -11,7 +11,7 @@ Word word;
 int state;  // this program has two states so far
 
 void setup() {
-  size(400, 400);
+  size(800, 600, P3D);
 
 
   String[] lines = loadStrings("file.txt");
@@ -22,11 +22,12 @@ void setup() {
 }
 
 void draw() {
-  background(10, 200, 200);
+  background(0);
 
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
-    word.drawWord();
+    word.updateWord();
+    
     break;
   case 1:
     word.drawLetters();
@@ -35,4 +36,9 @@ void draw() {
 
 void mouseClicked() {  // super simple interaction:
     state = 1 - state;   // the state changes on mouse click
+}
+void keyPressed(){
+  if(key == ' '){
+    word.toggleTreeShape();
+  }
 }

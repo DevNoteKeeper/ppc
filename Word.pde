@@ -5,20 +5,21 @@ class Word {
  float y = 0;
  float angle;
  Letter [] letters;
+boolean isTreeShapeChanged = false;
 
  Word (String word, float x, float y) {
-    myWord = word;
+  String wordWithoutSpace = word.replaceAll(" ", "");
+    myWord = wordWithoutSpace;
     this.x = x;
     this.y = y;
     letters = new Letter [myWord.length()];
-    
-    // split te word in an array of the individual letters
-    for(int i = 0; i< letters.length; i++) {
-      letters[i] = new Letter (myWord.charAt(i), random(20, width-20), random(20,height-20));
-    }
+    updateTreeShape();
+  
  }
+
  
  void drawWord(){
+  updateWord();
    pushMatrix();
    updateWord();
    rotate(angle); 
@@ -29,15 +30,8 @@ class Word {
    println(x, y);
   
  }
- 
- void drawLetters(){
-   for(int i = 0; i< letters.length; i++) {
-      letters[i].drawLetter();
-    } 
- }
- 
- 
- void updateWord(){
+
+  void updateWord(){
    // anything changing position and rotation
    if(x >= width/2 - 100 & y >= height/3){
    x -= 2;
@@ -47,5 +41,90 @@ class Word {
     x += 2;
    }
  }
+ 
+ void drawLetters(){
+   for(int i = 0; i< letters.length; i++) {
+    if(letters[i] != null){
+      letters[i].drawLetter();
+      letters[i].updateAlpha();
+      letters[i].updateRotation();
+    } }
+ }
+
+ void toggleTreeShape(){
+  //change tree shpae
+  isTreeShapeChanged = !isTreeShapeChanged;
+  //update changed tree
+  updateTreeShape();
+ }
+
+  int calculateRows(int letterCount){
+    int row = 0;
+    int totalLetters = 0;
+    while(totalLetters < letterCount){
+      row++;
+      totalLetters += row;
+    }
+    return row;
+ }
+
+ int calculateRowsWithBoundary(int letterCount){
+  int row = 2;
+  int totalLetters = 1;
+  int remainingLetters = letterCount - totalLetters;
+
+  while(remainingLetters > row){
+    row++;
+    remainingLetters-=2;
+  }
+  return row;
+ }
+
+ void updateTreeShape(){
+  int row = 0;
+  int countInRow = 1;
+  int letterIndex = 0;
+  int yStart = 100;
+  float rowSpacing = 50;
+  float baseX = width/2;
+
+    if(isTreeShapeChanged){
+    row = calculateRowsWithBoundary(myWord.length());
+  }else{
+    row = calculateRows(myWord.length());
+  }
+
+
+  for(int currentRow = 0; currentRow < row; currentRow++){
+    for(int i = 0; i < countInRow; i++){
+      if(letterIndex >= myWord.length())break;
+      //calculate x, yposition
+      float xPosition = baseX + (i-(countInRow-1)/2.0)*60;
+      float yPosition = yStart + currentRow*rowSpacing;
+
+      boolean isBoundary = isBoundaryLetter(currentRow, i, countInRow, row);
+
+      if(isBoundary || !isTreeShapeChanged){
+        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
+        letterIndex++;
+      }
+    }
+    countInRow++;
+  }
+ }
+ boolean isBoundaryLetter(int currentRow, int i, int countInRow, int row){
+  if(currentRow == 0){
+    return (i == countInRow/2);
+  }else if(currentRow == row-1){
+    return true;
+  } else{
+    return(i == 0 || i == countInRow -1);
+  }
+ }
+
+ 
+ 
+ 
+
  
 }

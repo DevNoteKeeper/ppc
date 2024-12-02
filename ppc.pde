@@ -33,11 +33,10 @@ void draw() {
   for(Word word : words){
     word.updateWord();
   }
-    
     break;
   case 1:
-   
-    wordForLetter.drawLetters();
+    wordForLetter.drawLetters(mouseX, mouseY);
+    break;
     
   }
 }

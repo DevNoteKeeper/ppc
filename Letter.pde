@@ -19,6 +19,8 @@ PFont font;
     rotationSpeed = random(0.01, 0.05);
     currentRotation = 0;
  }
+
+ //set random color
  color randomColor(){
   color randomColor = color(0);
   int randomNum = int(random(3));
@@ -34,7 +36,6 @@ PFont font;
     case 2: randomColor = color(int(random(200, 255)), int(random(200, 255)), int(random(0, 50)));
             break;
   }
-  
   return randomColor;
  }
  
@@ -49,14 +50,15 @@ PFont font;
    popMatrix();
  }
  
+ //change alpha value
  void updateAlpha(){
-   // anything changing position and rotation
     alpha += alphaSpeed;
     if(alpha > 255 || alpha < 50){
       alphaSpeed*= -1;
     }
-
  }
+
+//change roatation
  void updateRotation(){
   currentRotation += rotationSpeed;
   if(currentRotation > TWO_PI){
@@ -64,6 +66,17 @@ PFont font;
   }
  }
 
+//moves the letter away from the mouse pointer when it's nearby
+ void checkMouseProximity(float mouseX, float mouseY){
+  float distance = dist(mouseX, mouseY, xPosition, yPosition);
 
+  if(distance < 100){
+    if(mouseX > xPosition){
+      xPosition -=2;
+    }else{
+      xPosition +=2;
+    }
+  }
+ }
  
 }

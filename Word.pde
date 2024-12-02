@@ -43,12 +43,13 @@ boolean isTreeShapeChanged = false;
    }
  }
  
- void drawLetters(){
+ void drawLetters(float mouseX, float mouseY){
    for(int i = 0; i< letters.length; i++) {
     if(letters[i] != null){
       letters[i].drawLetter();
       letters[i].updateAlpha();
       letters[i].updateRotation();
+      letters[i].checkMouseProximity(mouseX, mouseY);
     } }
  }
 

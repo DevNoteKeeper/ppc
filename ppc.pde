@@ -8,20 +8,19 @@
 
 ArrayList<Word> words = new ArrayList<>();
 Word wordForLetter;
-// PFont font;
+PFont font;
 int state;  // this program has two states so far
 
 void setup() {
   size(800, 600, P3D);
-
-
+  font = createFont("BananaDays-nRMLV.ttf", 40);
   String[] lines = loadStrings("file.txt");
   for(int i = 0; i < lines.length; i++){
-    words.add(new Word(lines[i], random(width), random(height)));
+    words.add(new Word(lines[i], random(width), random(height), font));
   }
   wordForLetter = combineWords(words);
   // word = new Word(lines[0], width/2, height/2);
-//   font = createFont("banana-days-font/BananaDays-nRMLV.ttf", 60);
+
 
   state = 0;  // the initial stat is 0
 }
@@ -48,7 +47,7 @@ Word combineWords(ArrayList<Word> words){
   for(Word word : words){
     combinedText.append((word.myWord));
   }
-  return new Word(combinedText.toString().trim(), width/2, height/2);
+  return new Word(combinedText.toString().trim(), width/2, height/2, font);
 }
 
 void mouseClicked() {  // super simple interaction:

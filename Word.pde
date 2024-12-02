@@ -1,5 +1,5 @@
 class Word {
-  
+  PFont font;
  String myWord;
  float x = width/2;
  float y = 0;
@@ -7,11 +7,12 @@ class Word {
  Letter [] letters;
 boolean isTreeShapeChanged = false;
 
- Word (String word, float x, float y) {
+ Word (String word, float x, float y, PFont font) {
   String wordWithoutSpace = word.replaceAll(" ", "");
     myWord = wordWithoutSpace;
     this.x = x;
     this.y = y;
+    this.font = font;
     letters = new Letter [myWord.length()];
     updateTreeShape();
   
@@ -105,7 +106,7 @@ boolean isTreeShapeChanged = false;
       boolean isBoundary = isBoundaryLetter(currentRow, i, countInRow, row);
 
       if(isBoundary || !isTreeShapeChanged){
-        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
+        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition, font);
         letterIndex++;
       }
     }

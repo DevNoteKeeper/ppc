@@ -1,5 +1,5 @@
 class Letter {
-  
+PFont font;
  char myLetter;
  float xPosition, yPosition;
  color letterColor;
@@ -8,10 +8,11 @@ class Letter {
  float rotationSpeed;
  float currentRotation;
  
- Letter (char letter, float xPosition, float yPosition) {
+ Letter (char letter, float xPosition, float yPosition, PFont font) {
     myLetter = letter;
     this.xPosition = xPosition;
     this.yPosition = yPosition;
+    this.font = font;
     letterColor = randomColor();
     alpha = random(50, 255);
     alphaSpeed = random(1,10);
@@ -42,6 +43,7 @@ class Letter {
    translate(xPosition, yPosition);
    rotateY(currentRotation);
    fill(letterColor, alpha);
+   textFont(font);
    textSize(40);
    text(myLetter, 0,0);
    popMatrix();
@@ -61,5 +63,7 @@ class Letter {
     currentRotation -= TWO_PI;
   }
  }
+
+
  
 }

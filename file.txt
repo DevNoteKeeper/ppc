@@ -1,9 +1,4 @@
-Wishing you a joyful Christmas
-
-
-/*
-1. chirstmas card
-2. word falling down following christmas tree line
-3. even letter change alpha
-4. 
-*/
+Wishing
+you
+a joyful
+Christmas

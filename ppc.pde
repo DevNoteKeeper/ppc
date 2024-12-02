@@ -6,7 +6,8 @@
 // be creative!
 // angelika mader november 2021
 
-Word word;
+ArrayList<Word> words = new ArrayList<>();
+Word wordForLetter;
 // PFont font;
 int state;  // this program has two states so far
 
@@ -15,7 +16,11 @@ void setup() {
 
 
   String[] lines = loadStrings("file.txt");
-  word = new Word(lines[0], width/2, height/2);
+  for(int i = 0; i < lines.length; i++){
+    words.add(new Word(lines[i], random(width), random(height)));
+  }
+  wordForLetter = combineWords(words);
+  // word = new Word(lines[0], width/2, height/2);
 //   font = createFont("banana-days-font/BananaDays-nRMLV.ttf", 60);
 
   state = 0;  // the initial stat is 0
@@ -26,12 +31,24 @@ void draw() {
 
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
+  for(Word word : words){
     word.updateWord();
+  }
     
     break;
   case 1:
-    word.drawLetters();
+   
+    wordForLetter.drawLetters();
+    
   }
+}
+
+Word combineWords(ArrayList<Word> words){
+  StringBuilder combinedText = new StringBuilder();
+  for(Word word : words){
+    combinedText.append((word.myWord));
+  }
+  return new Word(combinedText.toString().trim(), width/2, height/2);
 }
 
 void mouseClicked() {  // super simple interaction:
@@ -39,6 +56,7 @@ void mouseClicked() {  // super simple interaction:
 }
 void keyPressed(){
   if(key == ' '){
-    word.toggleTreeShape();
+    wordForLetter.toggleTreeShape();
+    
   }
 }

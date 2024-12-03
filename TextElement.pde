@@ -1,4 +1,4 @@
-class TextElement {
+class TextElement extends FontElement{
     PFont font;
     String myWord;
     float xPosition, yPosition;
@@ -7,11 +7,12 @@ class TextElement {
     float alphaSpeed;
     float rotationSpeed;
     float currentRotation;
-    TextElement(String word, float xPosition, float yPosition, PFont font){
+    TextElement(String word, float xPosition, float yPosition){
+        super();
         this.myWord = word;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.font = font;
+        this.font = super.font;
         this.textColor = randomColor();
         alpha = random(50, 255);
         alphaSpeed = random(1,10);

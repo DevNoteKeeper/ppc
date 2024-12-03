@@ -3,7 +3,7 @@ float xPosition, yPosition;
 
  
  Letter (char letter, float xPosition, float yPosition, PFont font) {
-    super(String.valueOf(letter), xPosition, yPosition, font);
+    super(String.valueOf(letter), xPosition, yPosition);
 
  }
 

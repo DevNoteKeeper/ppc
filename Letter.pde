@@ -2,7 +2,7 @@ class Letter extends TextElement{
 float xPosition, yPosition;
 
  
- Letter (char letter, float xPosition, float yPosition, PFont font) {
+ Letter (char letter, float xPosition, float yPosition) {
     super(String.valueOf(letter), xPosition, yPosition);
 
  }

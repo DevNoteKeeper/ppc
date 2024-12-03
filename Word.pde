@@ -107,7 +107,7 @@ boolean isTreeShapeChanged = false;
       boolean isBoundary = isBoundaryLetter(currentRow, i, countInRow, row);
 
       if(isBoundary || !isTreeShapeChanged){
-        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition, font);
+        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
         letterIndex++;
       }
     }

@@ -12,10 +12,8 @@ class FontElement{
         switch(randomNum){
             case 0: createFont("BananaDays-nRMLV.ttf", 40);
                     break;
-            //green
             case 1: randomFont = createFont("MerryChristmasFlake.ttf", 40);
                     break;
-            //gold
             case 2: randomFont = createFont("PWHappyChristmas.ttf", 40);
                                 break;
 

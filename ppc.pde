@@ -8,6 +8,8 @@
 
 ArrayList<Word> words = new ArrayList<>();
 Word wordForLetter;
+ImageElement images;
+PImage backgoundImage;
 int state;  // this program has two states so far
 
 void setup() {
@@ -22,14 +24,18 @@ void setup() {
     wordWidth += wordLength*textSize+gapSize;
   }
   wordForLetter = combineWords(words);
-
-
   state = 0;  // the initial stat is 0
+
+  images = new ImageElement();
+  backgoundImage = images.changeImageOverTime();
 }
 
 void draw() {
   background(0);
-
+  if(frameCount %60 == 0){
+    backgoundImage = updateBackgroundWithInteraction();
+  }
+  image(backgoundImage,0, 0, width, height);
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
   for(Word word : words){
@@ -59,5 +65,39 @@ void keyPressed(){
   if(key == ' '){
     wordForLetter.toggleTreeShape();
     
-  }
-}
+  }}
+
+  PImage updateBackgroundWithInteraction(){
+    PImage img = backgoundImage;
+    img.loadPixels();
+
+    for(Word word : words){
+      int textX = int(word.xPosition);
+      int textY = int (word.yPosition);
+
+      for(int dx = 20; dx <= 20; dx--){
+        for(int dy = -20; dy <= 20; dy++){
+          int px = textX+dx;
+          int py = textY + dy;
+
+          if(px >=0 && px < width && py>=0 && py < height){
+            int index = px+py * img.width;
+            color originColor = img.pixels[index];
+
+            float distance = dist(0,0,dx,dy);
+            if(distance < 50){
+              float factor = map(distance, 0, 50, 1.5, 1.0);
+              int r = constrain(int (red(originColor)*factor), 0, 255);
+              int g = constrain(int (green(originColor)*factor), 0, 255);
+              int b = constrain(int (blue(originColor)*factor), 0, 255);
+              img.pixels[index] = color(r, g, b);
+            }
+          }
+        }
+      }
+    }img.updatePixels();
+    return img;
+    }
+  
+  
+

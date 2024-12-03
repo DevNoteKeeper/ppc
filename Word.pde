@@ -101,6 +101,7 @@ boolean scaleUp;
 
       if(isBoundary || !isTreeShapeChanged){
         letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
+        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
         letterIndex++;
       }
     }

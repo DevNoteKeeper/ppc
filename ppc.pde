@@ -8,7 +8,6 @@
 
 ArrayList<Word> words = new ArrayList<>();
 Word wordForLetter;
-ImageElement images;
 PImage backgoundImage;
 int state;  // this program has two states so far
 
@@ -26,16 +25,14 @@ void setup() {
   wordForLetter = combineWords(words);
   state = 0;  // the initial stat is 0
 
-  images = new ImageElement();
-  backgoundImage = images.changeImageOverTime();
+  backgoundImage = loadImage("image/2.jpeg");
 }
 
 void draw() {
   background(0);
-  if(frameCount %60 == 0){
-    backgoundImage = updateBackgroundWithInteraction();
-  }
-  image(backgoundImage,0, 0, width, height);
+  backgoundImage = updateBackgroundWithInteraction(backgoundImage);
+
+  image(backgoundImage, 0, 0, width, height);
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
   for(Word word : words){
@@ -67,37 +64,44 @@ void keyPressed(){
     
   }}
 
-  PImage updateBackgroundWithInteraction(){
-    PImage img = backgoundImage;
-    img.loadPixels();
+PImage updateBackgroundWithInteraction(PImage img) {
+  img.loadPixels();
 
-    for(Word word : words){
-      int textX = int(word.xPosition);
-      int textY = int (word.yPosition);
+  for (Word word : words) {
+    float wordX = word.getX();
+    float wordY = word.getY();
+    float wordWidth = word.getWidth();  // Assuming you can calculate the width of the word
+    float wordHeight = word.currentScale; // Assuming you can calculate the height of the word
 
-      for(int dx = 20; dx <= 20; dx--){
-        for(int dy = -20; dy <= 20; dy++){
-          int px = textX+dx;
-          int py = textY + dy;
+    for (int px = int(wordX - wordWidth / 2); px < int(wordX + wordWidth / 2); px++) {
+      for (int py = int(wordY - wordHeight / 2); py < int(wordY + wordHeight / 2); py++) {
+        if (px >= 0 && px < img.width && py >= 0 && py < img.height) {
+          int index = px + py * img.width;
+          color originColor = img.pixels[index];
+          float distance = dist(wordX, wordY, px, py);
 
-          if(px >=0 && px < width && py>=0 && py < height){
-            int index = px+py * img.width;
-            color originColor = img.pixels[index];
+          float proximityThreshold = word.currentScale * 0.5;  
 
-            float distance = dist(0,0,dx,dy);
-            if(distance < 50){
-              float factor = map(distance, 0, 50, 1.5, 1.0);
-              int r = constrain(int (red(originColor)*factor), 0, 255);
-              int g = constrain(int (green(originColor)*factor), 0, 255);
-              int b = constrain(int (blue(originColor)*factor), 0, 255);
-              img.pixels[index] = color(r, g, b);
-            }
+          if (distance < proximityThreshold) {
+            // Invert color or apply effect
+            int r = constrain(255 - int(red(originColor)), 0, 255);
+            int g = constrain(255 - int(green(originColor)), 0, 255);
+            int b = constrain(255 - int(blue(originColor)), 0, 255);
+            img.pixels[index] = color(r, g, b);  // Inverted color effect
           }
         }
       }
-    }img.updatePixels();
-    return img;
     }
+  }
+
+  img.updatePixels();
+  return img;
+}
+
+
+
+
+
   
   
 

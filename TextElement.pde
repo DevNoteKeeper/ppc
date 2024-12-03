@@ -20,6 +20,14 @@ class TextElement extends FontElement{
         currentRotation = 0;
     }
 
+      float getX() {
+    return xPosition;
+  }
+
+  float getY() {
+    return yPosition;
+  }
+
     void drawText(){
         pushMatrix();
         translate(xPosition, yPosition);

@@ -16,6 +16,18 @@ boolean scaleUp;
     updateTreeShape();
   
  }
+ float getX(){
+  return super.xPosition;
+ }
+
+  float getY(){
+  return super.yPosition;
+ }
+
+ float getWidth(){
+  String word = super.myWord;
+  return word.length()*currentScale;
+ }
 
  @Override
  void drawText(){

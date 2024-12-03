@@ -8,30 +8,32 @@
 
 ArrayList<Word> words = new ArrayList<>();
 Word wordForLetter;
+ImageElement images;
 PImage backgoundImage;
 int state;  // this program has two states so far
 
 void setup() {
   size(800, 600, P3D);
   String[] lines = loadStrings("file.txt");
-  int wordWidth = 0;
+  int wordWidth = 50;
   for(int i = 0; i < lines.length; i++){
     int wordLength = lines[i].length(); 
-    int gapSize = 20; 
+    int gapSize = 40; 
     int textSize = 15;
     words.add(new Word(lines[i], wordWidth, height/2));
     wordWidth += wordLength*textSize+gapSize;
   }
   wordForLetter = combineWords(words);
   state = 0;  // the initial stat is 0
-
-  backgoundImage = loadImage("image/2.jpeg");
+  images = new ImageElement();
+  backgoundImage = images.changeImageOverTime();
 }
 
 void draw() {
   background(0);
-  backgoundImage = updateBackgroundWithInteraction(backgoundImage);
-
+  backgoundImage = images.changeImageOverTime();
+  updateTextColorBasedOnBackground(backgoundImage);
+  updateBackgroundWithTextColorComplement(backgoundImage);
   image(backgoundImage, 0, 0, width, height);
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
@@ -64,39 +66,113 @@ void keyPressed(){
     
   }}
 
-PImage updateBackgroundWithInteraction(PImage img) {
+
+int[] getWordPixelRange(Word word, PImage img){
+  float wordX = word.getX();
+  float wordY = word.getY();
+  float wordWidth = word.getWidth();
+  float wordHeight = word.currentScale;
+
+  //calculate ratio of image and canvas
+  float imgWidthRatio = (float) img.width / width;  
+  float imgHeightRatio = (float) img.height / height; 
+
+  //calculate text range
+    int startX = int((wordX - wordWidth / 2) * imgWidthRatio);
+    int endX = int((wordX + wordWidth / 2) * imgWidthRatio);
+    int startY = int((wordY - wordHeight / 2) * imgHeightRatio);
+    int endY = int((wordY + wordHeight / 2) * imgHeightRatio);
+
+return new int[]{
+  startX, endX, startY, endY
+};
+
+}
+
+color getComplementaryColor(color textColor){
+  return color(255 - red(textColor), 255 - green(textColor), 255 - blue(textColor));
+}
+
+boolean isValidPixel(int px, int py, PImage img){
+  return px >= 0 && px < img.width && py >= 0 && py < img.height;
+}
+
+void updateTextColorBasedOnBackground(PImage img) {
   img.loadPixels();
 
   for (Word word : words) {
-    float wordX = word.getX();
-    float wordY = word.getY();
-    float wordWidth = word.getWidth();  // Assuming you can calculate the width of the word
-    float wordHeight = word.currentScale; // Assuming you can calculate the height of the word
+    int[] range = getWordPixelRange(word, img);
+    int startX = range[0];
+    int endX = range[1];
+    int startY = range[2];
+    int endY = range[3];
 
-    for (int px = int(wordX - wordWidth / 2); px < int(wordX + wordWidth / 2); px++) {
-      for (int py = int(wordY - wordHeight / 2); py < int(wordY + wordHeight / 2); py++) {
-        if (px >= 0 && px < img.width && py >= 0 && py < img.height) {
+    float totalBrightness = 0;
+    int pixelCount = 0;
+    float minBrightness = Float.MAX_VALUE;
+    float maxBrightness = -Float.MAX_VALUE;
+
+    for(int px = startX; px < endX; px++){
+      for(int py = startY; py < endY; py++){
+        if(isValidPixel(px, py, img)){
           int index = px + py * img.width;
-          color originColor = img.pixels[index];
-          float distance = dist(wordX, wordY, px, py);
+          color pixelColor = img.pixels[index];
 
-          float proximityThreshold = word.currentScale * 0.5;  
+          float brightnessValue = brightness(pixelColor);
+          totalBrightness += brightnessValue;
+          pixelCount++;
 
-          if (distance < proximityThreshold) {
-            // Invert color or apply effect
-            int r = constrain(255 - int(red(originColor)), 0, 255);
-            int g = constrain(255 - int(green(originColor)), 0, 255);
-            int b = constrain(255 - int(blue(originColor)), 0, 255);
-            img.pixels[index] = color(r, g, b);  // Inverted color effect
-          }
+          minBrightness = min(minBrightness, brightnessValue);
+          maxBrightness = max(maxBrightness, brightnessValue);
         }
       }
     }
+
+   float averageBrightness = totalBrightness/pixelCount;
+   float brightnessDifference = maxBrightness - minBrightness;
+          // If the brightness is above a certain threshold, change the text color
+    if (brightnessDifference < 30) {
+      word.setTextColor(color(255, 0, 0));  // Red color (low contrast)
+    } else if (averageBrightness > 230) {
+      word.setTextColor(color(150, 150, 150));  // Red color
+    }else if(brightnessDifference < 200){
+      word.setTextColor(color(100, 100, 100));
+    }
+     else if (averageBrightness > 200) {
+      word.setTextColor(color(0, 0, 255)); // Blue color
+    } else {
+      word.setTextColor(color(0, 255, 0));  // Green color
+    }  
   }
 
+
   img.updatePixels();
-  return img;
 }
+
+void updateBackgroundWithTextColorComplement(PImage img){
+  img.loadPixels();
+  for(Word word : words){
+    int[] range = getWordPixelRange(word, img);
+    int startX = range[0];
+    int endX = range[1];
+    int startY = range[2];
+    int endY = range[3];
+
+    color textColor = word.getTextColor();
+    color complementColor = getComplementaryColor(textColor);
+
+        for(int px = startX; px < endX; px++){
+      for(int py = startY; py < endY; py++){
+        if(isValidPixel(px, py, img)){
+          int index = px + py*img.width;
+          img.pixels[index] = complementColor;
+
+        }}}
+  }
+  img.updatePixels();
+}
+
+
 
 
 

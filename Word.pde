@@ -16,6 +16,14 @@ boolean scaleUp;
     updateTreeShape();
   
  }
+
+ color setTextColor(color setColor){
+  return super.textColor = setColor;
+ }
+
+ color getTextColor(){
+  return super.textColor;
+ }
  float getX(){
   return super.xPosition;
  }
@@ -32,7 +40,7 @@ boolean scaleUp;
  @Override
  void drawText(){
    pushMatrix(); 
-   fill(200,10,200);
+   fill(super.textColor);
    textSize(currentScale);
    text(super.myWord, super.xPosition, super.yPosition);
    popMatrix();
@@ -112,7 +120,6 @@ boolean scaleUp;
       boolean isBoundary = isBoundaryLetter(currentRow, i, countInRow, row);
 
       if(isBoundary || !isTreeShapeChanged){
-        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
         letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
         letterIndex++;
       }

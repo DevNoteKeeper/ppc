@@ -1,20 +1,15 @@
-class Word {
-  PFont font;
+class Word extends TextElement {
  String myWord;
- float x = width/2;
- float y = 0;
  float scaleSpeed;
  float currentScale;
  Letter [] letters;
 boolean isTreeShapeChanged = false;
 boolean scaleUp;
 
- Word (String word, float x, float y, PFont font) {
+ Word (String word, float x, float y) {
+  super(word, x, y);
   String wordWithoutSpace = word.replaceAll(" ", "");
     myWord = wordWithoutSpace;
-    this.x = x;
-    this.y = y;
-    this.font = font;
     letters = new Letter [myWord.length()];
     currentScale = 15;
     scaleSpeed = random(0.5, 1.5);
@@ -22,22 +17,24 @@ boolean scaleUp;
   
  }
 
- 
- void drawWord(){
+ @Override
+ void drawText(){
    pushMatrix(); 
    fill(200,10,200);
    textSize(currentScale);
-   text(myWord, x,y);
+   text(super.myWord, super.xPosition, super.yPosition);
    popMatrix();
-  println(currentScale);
  }
 
-  void updateScale(){
+   //update scale
+    void updateScale(){
   currentScale += scaleSpeed;
   if(currentScale > 50 || currentScale < 15){
     scaleSpeed *= -1;
   }
   }
+
+  
  
  void drawLetters(float mouseX, float mouseY){
    for(int i = 0; i< letters.length; i++) {
@@ -103,7 +100,7 @@ boolean scaleUp;
       boolean isBoundary = isBoundaryLetter(currentRow, i, countInRow, row);
 
       if(isBoundary || !isTreeShapeChanged){
-        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition, font);
+        letters[letterIndex] = new Letter(myWord.charAt(letterIndex), xPosition, yPosition);
         letterIndex++;
       }
     }

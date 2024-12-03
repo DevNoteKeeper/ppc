@@ -8,23 +8,20 @@
 
 ArrayList<Word> words = new ArrayList<>();
 Word wordForLetter;
-PFont font;
 int state;  // this program has two states so far
 
 void setup() {
   size(800, 600, P3D);
-  font = createFont("BananaDays-nRMLV.ttf", 40);
   String[] lines = loadStrings("file.txt");
   int wordWidth = 0;
   for(int i = 0; i < lines.length; i++){
     int wordLength = lines[i].length(); 
     int gapSize = 20; 
     int textSize = 15;
-    words.add(new Word(lines[i], wordWidth, height/2, font));
+    words.add(new Word(lines[i], wordWidth, height/2));
     wordWidth += wordLength*textSize+gapSize;
   }
   wordForLetter = combineWords(words);
-  // word = new Word(lines[0], width/2, height/2);
 
 
   state = 0;  // the initial stat is 0
@@ -36,7 +33,7 @@ void draw() {
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
   for(Word word : words){
-    word.drawWord();
+    word.drawText();
     word.updateScale();
   }
     break;
@@ -52,7 +49,7 @@ Word combineWords(ArrayList<Word> words){
   for(Word word : words){
     combinedText.append((word.myWord));
   }
-  return new Word(combinedText.toString().trim(), width/2, height/2, font);
+  return new Word(combinedText.toString().trim(), width/2, height/2);
 }
 
 void mouseClicked() {  // super simple interaction:

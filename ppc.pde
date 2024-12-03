@@ -15,9 +15,15 @@ void setup() {
   size(800, 600, P3D);
   font = createFont("BananaDays-nRMLV.ttf", 40);
   String[] lines = loadStrings("file.txt");
+  int wordWidth = 0;
   for(int i = 0; i < lines.length; i++){
-    words.add(new Word(lines[i], random(width), random(height), font));
+    int wordLength = lines[i].length(); 
+    int gapSize = 20; 
+    int textSize = 15;
+    words.add(new Word(lines[i], wordWidth, height/2, font));
+    wordWidth += wordLength*textSize+gapSize;
   }
+
   wordForLetter = combineWords(words);
   // word = new Word(lines[0], width/2, height/2);
 
@@ -31,7 +37,9 @@ void draw() {
   switch(state) {      // here a case distinction using a switch instruction
   case 0:
   for(Word word : words){
-    word.updateWord();
+    word.drawWord();
+    word.updateScale();
+    
   }
     break;
   case 1:

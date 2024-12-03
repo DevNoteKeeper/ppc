@@ -25,7 +25,6 @@ void setup() {
   }
 
   wordForLetter = combineWords(words);
-  // word = new Word(lines[0], width/2, height/2);
 
 
   state = 0;  // the initial stat is 0

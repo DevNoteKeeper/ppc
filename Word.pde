@@ -29,7 +29,6 @@ boolean scaleUp;
    textSize(currentScale);
    text(myWord, x,y);
    popMatrix();
-  println(currentScale);
  }
 
   void updateScale(){
